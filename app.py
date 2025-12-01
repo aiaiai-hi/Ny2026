@@ -7,25 +7,25 @@ from utils.mailer import send_email
 # --- Streamlit Config ---
 st.set_page_config(page_title="Tanya’s Advent Calendar", page_icon="🎄", layout="wide")
 
-# --- Background + Snow Animation ---
+# --- Background + Snow + Music ---
 def set_christmas_theme():
     st.markdown("""
     <style>
     .stApp {
-        background-image: url("https://i.imgur.com/9VnU95T.jpg");
+        background-image: url("https://img.freepik.com/free-vector/christmas-background-with-snowflakes_1048-1841.jpg?t=st=1733000000~exp=1733500000~hmac=1c3435f9a37f056f564b54c141244e5c004937c6ad02cd79a790bfdaedb2f8f9&w=1480");
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
         color: white;
         font-family: 'Comic Sans MS', cursive, sans-serif;
     }
-    /* Snowflakes animation */
+    /* Snowflake animation */
     @keyframes snowflakes-fall {
         0% {top: -10%;}
         100% {top: 100%;}
     }
     @keyframes snowflakes-shake {
-        0%, 100% {transform: translateX(0);}
+        0%,100% {transform: translateX(0);}
         50% {transform: translateX(80px);}
     }
     .snowflake {
@@ -38,26 +38,38 @@ def set_christmas_theme():
         animation-timing-function: linear, ease-in-out;
         animation-iteration-count: infinite, infinite;
     }
-    .snowflake:nth-of-type(0) { left: 1%; animation-delay: 0s, 0s; }
     .snowflake:nth-of-type(1) { left: 10%; animation-delay: 1s, 1s; }
     .snowflake:nth-of-type(2) { left: 20%; animation-delay: 6s, .5s; }
     .snowflake:nth-of-type(3) { left: 30%; animation-delay: 4s, 2s; }
-    .snowflake:nth-of-type(4) { left: 40%; animation-delay: 2s, 2s; }
-    .snowflake:nth-of-type(5) { left: 50%; animation-delay: 8s, 3s; }
-    .snowflake:nth-of-type(6) { left: 60%; animation-delay: 6s, 2s; }
-    .snowflake:nth-of-type(7) { left: 70%; animation-delay: 2.5s, 1s; }
-    .snowflake:nth-of-type(8) { left: 80%; animation-delay: 1s, 0s; }
-    .snowflake:nth-of-type(9) { left: 90%; animation-delay: 3s, 1.5s; }
+    .snowflake:nth-of-type(4) { left: 50%; animation-delay: 8s, 3s; }
+    .snowflake:nth-of-type(5) { left: 60%; animation-delay: 2s, 2s; }
+    .snowflake:nth-of-type(6) { left: 80%; animation-delay: 1s, 0s; }
     </style>
+
     <div class="snowflake">❄️</div>
     <div class="snowflake">❅</div>
     <div class="snowflake">❆</div>
     <div class="snowflake">❄️</div>
     <div class="snowflake">❅</div>
     <div class="snowflake">❆</div>
-    <div class="snowflake">❄️</div>
-    <div class="snowflake">❅</div>
-    <div class="snowflake">❆</div>
+
+    <!-- Music player -->
+    <audio id="bg-music" autoplay loop>
+      <source src="https://cdn.pixabay.com/download/audio/2022/12/14/audio_4a4b3e46f0.mp3?filename=jingle-bells-christmas-hip-hop-13055.mp3" type="audio/mp3">
+    </audio>
+    <script>
+      let audio = document.getElementById("bg-music");
+      let isPlaying = true;
+      function toggleMusic() {
+        if (isPlaying) {{
+          audio.pause();
+          isPlaying = false;
+        }} else {{
+          audio.play();
+          isPlaying = true;
+        }}
+      }
+    </script>
     """, unsafe_allow_html=True)
 
 set_christmas_theme()
@@ -73,6 +85,15 @@ if "admin_mode" not in st.session_state:
 st.markdown("<h1 style='text-align:center;'>🎅 Tanya’s Christmas Advent Calendar 🎁</h1>", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align:center;'>Welcome, Tanya! Santa and his elves are back with magical winter challenges just for you. Let’s make this December full of joy, creativity, and Christmas magic! ❄️</h3>", unsafe_allow_html=True)
 st.write("---")
+
+# --- Music control button ---
+st.markdown("""
+<div style='text-align:center;'>
+    <button onclick='toggleMusic()' style='padding:10px 20px;border:none;border-radius:8px;background-color:#e74c3c;color:white;font-size:16px;cursor:pointer;'>
+        🔊 Toggle Christmas Music
+    </button>
+</div>
+""", unsafe_allow_html=True)
 
 # --- Admin Login Sidebar ---
 with st.sidebar:
@@ -142,18 +163,3 @@ if "selected_day" in st.session_state:
     st.markdown(f"### ✨ Task: {task_text}")
 
     uploaded_file = st.file_uploader("Upload your completed work (image, file, etc.)")
-    link_input = st.text_input("Or paste a link here")
-
-    if st.button("Completed! 🎉"):
-        progress[day] = {
-            "completed": True,
-            "file": uploaded_file.name if uploaded_file else "",
-            "link": link_input
-        }
-        save_progress(progress)
-        send_email(day)
-        st.balloons()
-        st.success("🎈 Well done, Tanya! You’re amazing! 🎄")
-
-st.write("---")
-st.markdown("<h4 style='text-align:center;'>Made with ❤️ for Tanya by Santa 🎅</h4>", unsafe_allow_html=True)
