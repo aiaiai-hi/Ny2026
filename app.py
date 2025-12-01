@@ -3,7 +3,6 @@ import json
 import os
 from datetime import datetime, time
 from utils.storage import load_tasks, save_tasks, load_progress, save_progress
-from utils.mailer import send_email
 
 # --- App Config ---
 st.set_page_config(page_title="Tanya’s Advent Calendar", page_icon="🎄", layout="wide")
@@ -145,6 +144,7 @@ def show_day_page():
     task_info = tasks.get(day, {})
     greeting = task_info.get("greeting", "")
     task_text = task_info.get("task", "")
+
     st.markdown(f"<h2 style='text-align:center;'>🎄 Day {day}</h2>", unsafe_allow_html=True)
     st.markdown(f"<p style='font-size:32px;text-align:center;color:#2c3e50;font-weight:bold;margin-top:10px;'>{greeting}</p>", unsafe_allow_html=True)
     st.markdown(f"<h3 style='text-align:center;margin-top:20px;'>✨ Task: {task_text}</h3>", unsafe_allow_html=True)
@@ -174,10 +174,8 @@ def show_day_page():
             file_path = answers[day]["file"]
             file_name = os.path.basename(file_path)
             st.markdown(f"📎 Attached file: `{file_name}`")
-
             with open(file_path, "rb") as f:
                 st.download_button("⬇️ Download File", data=f, file_name=file_name)
-
             if st.button("🗑️ Delete File"):
                 try:
                     os.remove(file_path)
@@ -191,12 +189,8 @@ def show_day_page():
     if st.button("✅ Completed!"):
         progress[day] = {"completed": True}
         save_progress(progress)
-        send_status = send_email(day)
         st.balloons()
-        if send_status:
-            st.success("🎈 Well done, Tanya! Email sent to Anna 🎅")
-        else:
-            st.warning("🎈 Well done, Tanya! But email could not be sent ❗")
+        st.success("🎈 Well done, Tanya! You’re amazing! 🎄")
 
     if st.button("⬅️ Back to Calendar"):
         st.session_state.page = "calendar"
