@@ -145,7 +145,6 @@ def show_day_page():
     task_info = tasks.get(day, {})
     greeting = task_info.get("greeting", "")
     task_text = task_info.get("task", "")
-    st.write("---")
     st.markdown(f"<h2 style='text-align:center;'>🎄 Day {day}</h2>", unsafe_allow_html=True)
     st.markdown(f"<p style='font-size:32px;text-align:center;color:#2c3e50;font-weight:bold;margin-top:10px;'>{greeting}</p>", unsafe_allow_html=True)
     st.markdown(f"<h3 style='text-align:center;margin-top:20px;'>✨ Task: {task_text}</h3>", unsafe_allow_html=True)
@@ -153,7 +152,7 @@ def show_day_page():
     prev_answer = answers.get(day, {}).get("text", "")
     prev_file = answers.get(day, {}).get("file", "")
 
-    user_input = st.text_area("Вставить текст или ссылку:", value=prev_answer, height=150)
+    user_input = st.text_area("Enter your text or link:", value=prev_answer, height=150)
     uploaded_file = st.file_uploader("Upload your completed work (image, file, etc.)")
 
     if st.button("💾 Save Answer"):
@@ -192,9 +191,12 @@ def show_day_page():
     if st.button("✅ Completed!"):
         progress[day] = {"completed": True}
         save_progress(progress)
-        send_email(day)
+        send_status = send_email(day)
         st.balloons()
-        st.success("🎈 Well done, Tanya! You’re amazing! 🎄")
+        if send_status:
+            st.success("🎈 Well done, Tanya! Email sent to Anna 🎅")
+        else:
+            st.warning("🎈 Well done, Tanya! But email could not be sent ❗")
 
     if st.button("⬅️ Back to Calendar"):
         st.session_state.page = "calendar"
