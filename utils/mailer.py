@@ -2,8 +2,8 @@ import smtplib
 from email.mime.text import MIMEText
 
 def send_email(day: int) -> bool:
-    sender_email = "YOUR_EMAIL@gmail.com"      # твоя почта
-    sender_password = "YOUR_APP_PASSWORD"      # пароль приложения
+    sender_email = "platya4@gmail.com"      # твоя 
+    sender_password = "Wsreyjdf85!"      # пароль приложения
     recipient_email = "anna_ts@inbox.ru"
 
     subject = f"Tanya completed her Day {day} task!"
