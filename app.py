@@ -98,7 +98,7 @@ with st.sidebar:
 # --- Admin Panel ---
 if st.session_state.admin_mode:
     st.title("🎄 Admin Panel - Manage Daily Greetings & Tasks")
-    selected_day = st.number_input("Day (1-24)", min_value=1, max_value=24, step=1)
+    selected_day = st.number_input("Day (1-31)", min_value=1, max_value=31, step=1)
     greeting = st.text_area("Greeting Message", tasks.get(str(selected_day), {}).get("greeting", ""))
     task = st.text_area("Task Description", tasks.get(str(selected_day), {}).get("task", ""))
     if st.button("Save Task"):
@@ -115,11 +115,13 @@ def show_calendar():
     current_time = datetime.now().time()
     current_day = datetime.now().day
     day = 1
+    total_days = 31  # extended to full December
 
-    for i in range(4):
+    # 6 columns per row
+    while day <= total_days:
         cols = st.columns(6)
         for j in range(6):
-            if day <= 24:
+            if day <= total_days:
                 day_str = str(day)
                 completed = progress.get(day_str, {}).get("completed", False)
                 unlocked = (day <= current_day and current_time >= time(6, 0))
@@ -135,7 +137,6 @@ def show_calendar():
                     else:
                         st.warning("You can open this task after 6:00 AM each day.")
                 day += 1
-
 
 def show_day_page():
     day = str(st.session_state.selected_day)
