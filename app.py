@@ -40,7 +40,7 @@ def add_bg_from_local(image_file):
         unsafe_allow_html=True
     )
 
-add_bg_from_local("assets/snow_bg.jpg")
+add_bg_from_local("assets/IMG_2841.jpeg")
 
 # Load data
 tasks = load_tasks()
