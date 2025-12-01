@@ -103,8 +103,18 @@ if st.session_state.admin_mode:
         st.success(f"Saved for Day {selected_day}")
     st.stop()
 
+# --- Progress bar ---
+def show_progress_bar():
+    total_days = 31
+    completed_days = sum(1 for d in progress if progress[d].get("completed"))
+    percent = round((completed_days / total_days) * 100, 1)
+    st.markdown(f"### 🎯 You’ve completed **{completed_days} of {total_days} days** ({percent}%)")
+    st.progress(percent / 100)
+    st.write("---")
+
 # --- Calendar Page ---
 def show_calendar():
+    show_progress_bar()
     st.subheader("✨ Select your day below ✨")
     current_time = datetime.now().time()
     current_day = datetime.now().day
@@ -157,7 +167,6 @@ def show_day_page():
         save_answers(answers)
         st.success("✅ Answer saved!")
 
-    # Display saved content
     if day in answers:
         st.markdown("### 📝 Your Saved Answer:")
         if answers[day].get("text"):
