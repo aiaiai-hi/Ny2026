@@ -16,12 +16,14 @@ def add_snow_effect():
         color: #222;
         font-family: 'Comic Sans MS', cursive, sans-serif;
     }
-    /* Button styles */
+
+    /* Button styles: always visible text */
     button[kind="secondary"] div p, button[kind="primary"] div p {
         color: #2c3e50 !important;
         font-weight: bold;
         font-size: 18px;
     }
+
     /* Snowflakes animation */
     @keyframes snowflakes-fall {
         0% {top: -10%;}
@@ -142,9 +144,12 @@ def show_day_page():
     task_text = task_info.get("task", "")
 
     st.write("---")
-    st.markdown(f"## 🎄 Day {day}")
-    st.markdown(f"**{greeting}**")
-    st.markdown(f"### ✨ Task: {task_text}")
+    st.markdown(f"<h2 style='text-align:center;'>🎄 Day {day}</h2>", unsafe_allow_html=True)
+    st.markdown(
+        f"<p style='font-size:32px; text-align:center; color:#2c3e50; font-weight:bold; margin-top:10px;'>{greeting}</p>",
+        unsafe_allow_html=True
+    )
+    st.markdown(f"<h3 style='text-align:center; margin-top:20px;'>✨ Task: {task_text}</h3>", unsafe_allow_html=True)
 
     uploaded_file = st.file_uploader("Upload your completed work (image, file, etc.)")
     link_input = st.text_input("Or paste a link here")
@@ -172,4 +177,3 @@ elif st.session_state.page == "day":
 
 st.write("---")
 st.markdown("<h4 style='text-align:center;'>Made with ❤️ for Tanya by Santa 🎅</h4>", unsafe_allow_html=True)
-
