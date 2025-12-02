@@ -73,6 +73,19 @@ st.markdown("<h1 style='text-align:center;'>🎅 Tanya’s Christmas Advent Cale
 st.markdown("<h3 style='text-align:center;'>Welcome, Tanya! Santa and his elves are back with magical winter challenges just for you. Let’s make this December full of joy, creativity, and Christmas magic! ❄️</h3>", unsafe_allow_html=True)
 st.write("---")
 
+video_path = "assets/-4523155194360961279.mp4"
+
+st.markdown(
+    f"""
+    <video autoplay loop muted playsinline style="width:100%; border-radius:15px; margin-top:10px;">
+        <source src="{video_path}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    """,
+    unsafe_allow_html=True
+)
+
+
 # --- Sidebar Admin ---
 with st.sidebar:
     st.header("Parent Panel")
